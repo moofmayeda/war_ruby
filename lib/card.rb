@@ -1,8 +1,9 @@
 class Card
-  attr_reader(:rank, :suit)
+  attr_reader(:rank, :suit, :rank_value)
 
-  def initialize(rank, suit)
-    @rank = rank
-    @suit = suit
+  def initialize(properties)
+    @rank = properties[:rank]
+    @rank_value = properties[:rank_value]
+    @suit = properties[:suit]
   end
 end
