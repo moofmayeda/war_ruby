@@ -5,10 +5,6 @@ class Hand
     @cards = cards
   end
 
-  def play_card
-    @cards.first.rank_value
-  end
-
   def remove_card(selected_cards)
     selected_cards.each {|card| @cards.delete(card)}
   end

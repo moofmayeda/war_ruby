@@ -1,5 +1,5 @@
 class Game
-  attr_accessor(:player_1_name, :player_2_name, :player_1, :player_2, :cards_to_move)
+  attr_accessor(:player_1_name, :player_2_name, :player_1, :player_2, :cards_in_battle)
 
   def initialize(player_1, player_2)
     @player_1_name = player_1
@@ -8,7 +8,6 @@ class Game
   end
 
   def deck
-    #figure out how to pass in a hash of ranks, values, and suits
     @ranks = [["2", 2], ["3", 3], ["4", 4], ["5", 5], ["6", 6], ["7", 7], ["8", 8], ["9", 9], ["10", 10], ["J", 11], ["Q", 12], ["K", 13], ["A", 14]]
     @suits = ["D", "C", "H", "S"]
     @deck = []
@@ -27,12 +26,25 @@ class Game
   end
 
   def battle
-    if player_1.play_card > @player_2.play_card
-      return @player_1
-    elsif player_1.play_card < @player_2.play_card
-      return @player_2
+    @cards_in_battle = []
+    soldier_1 = @player_1.cards.first
+    soldier_2 = @player_2.cards.first
+    while soldier_1.rank_value == soldier_2.rank_value
+      @cards_in_battle << @player_1.cards[0..3]
+      @cards_in_battle << @player_2.cards[0..3]
+      @player_1.remove_card(@player_1.cards[0..3])
+      @player_2.remove_card(@player_2.cards[0..3])
+      soldier_1 = @player_1.cards.first
+      soldier_2 = @player_2.cards.first
+    end
+    if soldier_1.rank_value > soldier_2.rank_value
+      @player_1.add_card([soldier_2, @cards_in_battle].flatten)
+      @player_2.remove_card([soldier_2])
+      player_1_name
     else
-      return "WAR!"
+      @player_2.add_card([soldier_1, @cards_in_battle].flatten)
+      @player_1.remove_card([soldier_1])
+      player_2_name
     end
   end
 end
