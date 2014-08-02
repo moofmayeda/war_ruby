@@ -17,15 +17,21 @@ puts "\e[H\e[2J"
 @game.deck
 @game.deal
 
-while @game.not_over
+@suit_symbols = {'D' => "\u2666", 'C' => "\u2663", 'H' => "\u2665", 'S' => "\u2660"}
+
+def play
   puts "***CARD COUNT ***\t#{@game.player_1_name}: #{@game.player_1.number}\t\t#{@game.player_2_name}: #{@game.player_2.number}"
-  puts "\t\t\t#{@game.player_1.cards.first.rank}\t\tVS\t#{@game.player_2.cards.first.rank}"
+  puts "\t\t\t#{@game.player_1.cards.first.rank}#{@suit_symbols[@game.player_1.cards.first.suit]}\t\tVS\t#{@game.player_2.cards.first.rank}#{@suit_symbols[@game.player_2.cards.first.suit]}"
   @game.battle
-  puts "hit 'enter' for another round"
-  gets.chomp
-  puts "\e[H\e[2J"
+  if @game.not_over == true
+    puts "hit 'enter' for another round"
+    gets.chomp
+    puts "\e[H\e[2J"
+    play
+  end
 end
 
+play
 puts "#{@game.not_over} WINS THE GAME!"
 exit
 turn
