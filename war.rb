@@ -2,6 +2,8 @@ require './lib/card'
 require './lib/hand'
 require './lib/game'
 
+@suit_symbols = {'D' => "\u2666", 'C' => "\u2663", 'H' => "\u2665", 'S' => "\u2660"}
+
 puts "\e[H\e[2J"
 puts "*" * 88
 puts "WAR " * 20
@@ -14,10 +16,8 @@ name_2 = gets.chomp
 
 puts "\e[H\e[2J"
 @game = Game.new(name_1, name_2)
-@game.deck
+Card.shuffle
 @game.deal
-
-@suit_symbols = {'D' => "\u2666", 'C' => "\u2663", 'H' => "\u2665", 'S' => "\u2660"}
 
 def play
   puts "***CARD COUNT ***\t#{@game.player_1_name}: #{@game.player_1.number}\t\t#{@game.player_2_name}: #{@game.player_2.number}"
@@ -34,4 +34,3 @@ end
 play
 puts "#{@game.not_over} WINS THE GAME!"
 exit
-turn

@@ -4,6 +4,11 @@ require 'hand'
 require 'game'
 
 describe "Card" do
+
+  before do
+    Card.clear
+  end
+
   describe "initialize" do
     it "initializes a card with a rank, rank value, and a suit" do
       test_card = Card.new({:rank => '4', :rank_value => 4, :suit => 'C'})
@@ -22,6 +27,30 @@ describe "Card" do
     it "returns the suit of a card" do
       test_card = Card.new({:rank => '4', :rank_value => 4, :suit => 'C'})
       expect(test_card.suit).to eq 'C'
+    end
+  end
+
+  describe ".all" do
+    it "returns an array of all card instances" do
+      test_card = Card.new({:rank => '4', :rank_value => 4, :suit => 'C'})
+      expect(Card.all).to eq [test_card]
+    end
+  end
+
+  describe ".clear" do
+    it "clears out the array of all card instances" do
+      test_card = Card.new({:rank => '4', :rank_value => 4, :suit => 'C'})
+      Card.clear
+      expect(Card.all).to eq []
+    end
+  end
+
+  describe ".shuffle" do
+    it "randomly shuffles the entire deck of cards" do
+      test_card_1 = Card.new({:rank => '4', :rank_value => 4, :suit => 'C'})
+      test_card_2 = Card.new({:rank => '5', :rank_value => 5, :suit => 'H'})
+      Card.all.stub(:shuffle)
+      expect(Card.all).to eq [test_card_1, test_card_2]
     end
   end
 end
@@ -81,10 +110,21 @@ describe "Hand" do
 end
 
 describe "Game" do
+
+  before do
+    Card.clear
+  end
+
   describe "initialize" do
     it "initializes a game with 2 names" do
       test_game = Game.new("moof", "joseph")
       expect(test_game).to be_a Game
+    end
+
+    it "creates a 52 card deck" do
+      test_game = Game.new("moof", "joseph")
+      expect(Card.all[51].rank).to eq 'A'
+      expect(Card.all[51].suit).to eq 'S'
     end
   end
 
@@ -95,18 +135,9 @@ describe "Game" do
     end
   end
 
-  describe "deck" do
-    it "creates a 52 card deck" do
-      test_game = Game.new("moof", "joseph")
-      expect(test_game.deck[51].rank).to eq "A"
-      expect(test_game.deck[51].suit).to eq "S"
-    end
-  end
-
   describe "deal" do
-    it "randomizes the deck and deals 26 cards to each player" do
+    it "deals 26 cards to each player" do
       test_game = Game.new("moof", "joseph")
-      test_game.deck
       test_game.deal
       expect(test_game.player_1.cards.length).to eq 26
     end
@@ -147,7 +178,6 @@ describe "Game" do
   describe "not_over" do
     it "returns true if the game should keep going" do
       test_game = Game.new("moof", "joseph")
-      test_game.deck
       test_game.deal
       expect(test_game.not_over).to eq true
     end
