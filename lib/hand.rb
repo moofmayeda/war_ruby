@@ -12,4 +12,8 @@ class Hand
   def add_card(selected_cards)
     @cards.concat(selected_cards)
   end
+
+  def number
+    @cards.length
+  end
 end

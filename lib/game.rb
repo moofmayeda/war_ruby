@@ -38,13 +38,23 @@ class Game
       soldier_2 = @player_2.cards.first
     end
     if soldier_1.rank_value > soldier_2.rank_value
+      @player_1.cards.rotate!(1)
       @player_1.add_card([soldier_2, @cards_in_battle].flatten)
       @player_2.remove_card([soldier_2])
       player_1_name
     else
+      @player_2.cards.rotate!(1)
       @player_2.add_card([soldier_1, @cards_in_battle].flatten)
       @player_1.remove_card([soldier_1])
       player_2_name
+    end
+  end
+
+  def not_over
+    if @player_1.number > 0 && @player_2.number > 0
+      true
+    else
+      @player_1.number > @player_2.number ? @player_1_name : @player_2_name
     end
   end
 end

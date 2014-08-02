@@ -68,6 +68,16 @@ describe "Hand" do
       expect(test_hand.cards).to eq [test_card_1, test_card_2, test_card_3]
     end
   end
+
+  describe "number" do
+    it "returns the number of cards in the hand" do
+      test_card_1 = Card.new({:rank => '4', :rank_value => 4, :suit => 'C'})
+      test_card_2 = Card.new({:rank => '5', :rank_value => 5, :suit => 'D'})
+      test_card_3 = Card.new({:rank => 'J', :rank_value => 11, :suit => 'H'})
+      test_hand = Hand.new([test_card_1, test_card_2, test_card_3])
+      expect(test_hand.number).to eq 3
+    end
+  end
 end
 
 describe "Game" do
@@ -131,6 +141,24 @@ describe "Game" do
       expect(test_game.battle).to eq "joseph"
       expect(test_game.player_1.cards).to eq []
       expect(test_game.player_2.cards).to eq [test_card_2_5, test_card_1_5, test_card_1_1, test_card_1_2, test_card_1_3, test_card_1_4, test_card_2_1, test_card_2_2, test_card_2_3, test_card_2_4]
+    end
+  end
+
+  describe "not_over" do
+    it "returns true if the game should keep going" do
+      test_game = Game.new("moof", "joseph")
+      test_game.deck
+      test_game.deal
+      expect(test_game.not_over).to eq true
+    end
+
+    it "returns the winning player if the game is over" do
+      test_game = Game.new("moof", "joseph")
+      test_card_1_1 = Card.new({:rank => '4', :rank_value => 4, :suit => 'C'})
+      test_card_1_2 = Card.new({:rank => '5', :rank_value => 5, :suit => 'C'})
+      test_game.player_1 = Hand.new([test_card_1_1, test_card_1_2])
+      test_game.player_2 = Hand.new([])
+      expect(test_game.not_over).to eq "moof"
     end
   end
 end
